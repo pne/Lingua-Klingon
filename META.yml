@@ -1,0 +1,19 @@
+--- #YAML:1.0
+name: Lingua-Klingon-Recode
+version: 1.0
+license: bsd
+distribution_type: module
+requires:
+  Carp: 0
+  perl: 5.005_03
+recommends: {}
+build_requires:
+  Module::Build: 0
+  Test::Differences: 0
+  Test::More: 0.19
+conflicts: {}
+provides:
+  Lingua::Klingon::Recode:
+    file: lib/Lingua/Klingon/Recode.pm
+    version: 1.0
+generated_by: Module::Build version 0.20
