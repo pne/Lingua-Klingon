@@ -1,5 +1,5 @@
-Lingua::Klingon::Recode version 1.0
-===================================
+Lingua::Klingon::Recode version 1.01
+====================================
 
 Lingua::Klingon::Recode is a module which allows you to convert Klingon
 strings between various encodings, for example, from the so-called
@@ -7,10 +7,16 @@ strings between various encodings, for example, from the so-called
 
 It currently supports the following encodings:
 
-- "tlhIngan Hol" - the standard transliteration (includes two variants
-  "tlhingan hol" and "TLHINGAN HOL" which use only lower-case and
-  upper-case letters, respectively; however, their use is discouraged
-  since this confuses the letters 'q' and 'Q')
+- "tlhIngan Hol" - the standard transliteration
+  - This includes two variants "tlhingan hol" and "TLHINGAN HOL" which
+    use only lower-case and upper-case letters, respectively; however,
+    their use is discouraged since this confuses the letters 'q' and
+    'Q'. Also, the letter sequence "ngh" or "NGH" cannot be
+    disambiguated as ng+H or n+gh; it will be treated as the former.
+    (For example, the tlhingan hol string "monghom" and the TLHINGAN HOL
+    string "MONGHOM" are always interpreted as the tlhIngan Hol string
+    "mongHom" [little neck?], never as the tlhIngan Hol string
+    "monghom" [capital group?].)
 
 - "XIFAN HOL" - another fairly common transliteration, this is the
   encoding of at least one Klingon font. Also available in lower-case
@@ -26,7 +32,11 @@ It currently supports the following encodings:
 
 CHANGES SINCE THE LAST VERSION
 
-This is the first version.
+Parse "ngh" correctly in "tlhIngan Hol"; "monghom" is now correctly
+m+o+n+gh+o+m rather than m+o+ng+(unrecognised letter h, passed
+through)+o+m.
+
+Update tests to test various "ng"/"ngH"/"ngh"/"nggh" situations.
 
 For changes in previous versions, see the file "Changes".
 
@@ -55,7 +65,7 @@ modules are needed at run time.
 
 COPYRIGHT AND LICENCE
 
-Copyright (C) 2003 by Philip Newton.  All rights reserved.
+Copyright (C) 2003, 2004 by Philip Newton.  All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are

@@ -25,7 +25,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 @EXPORT = qw(
 	
 );
-$VERSION = '1.0';
+$VERSION = '1.01';
 
 # convert from encoding FOO to uhmal gnj
 my %from = (
@@ -171,7 +171,10 @@ my %internal = (
 # regular expression that defines a letter
 my %letter = (
     'uhmal' => qr/[a-z]/,
-    'tlhIngan' => qr/tlh|[cg]h|ng|[abDeHIjlmnopqQrStuvwy']/,
+    # "ng(?!h)" since the sequence "ngh" must be n+gh
+    'tlhIngan' => qr/tlh|[cg]h|ng(?!h)|[abDeHIjlmnopqQrStuvwy']/,
+    # Can't do that here, unfortunately, since "ngh" could be either
+    # n+gh or ng+H = ng+h. The disadvantage of case-smashing.
     'tlhingan' => qr/tlh|[cg]h|ng|[abdehijlmnopqrstuvwy']/,
     'XIFAN' => qr/[A-Y']/,
     'XIFANZ' => qr/[A-Z]/,
@@ -224,6 +227,7 @@ sub recode {
         for(@input) {
           $_ = lc $_ if $base{$from} eq lc $from;
           $_ = uc $_ if $base{$from} eq uc $from;
+	  # Can't use /o since $base{$from} will change
           s/($letter{$base{$from}})/$from{$base{$from}}{$1}/g;
         }
       }
@@ -236,7 +240,7 @@ sub recode {
       } else {
         @result = @input;
         for(@result) {
-          s/($letter{'uhmal'})/$to{$base{$to}}{$1}/g;
+          s/($letter{'uhmal'})/$to{$base{$to}}{$1}/go;
           $_ = lc $_ if $to eq lc $base{$to};
           $_ = uc $_ if $to eq uc $base{$to};
         }
@@ -257,8 +261,8 @@ Lingua::Klingon::Recode - Convert Klingon words between different encodings
 
 =head1 VERSION
 
-This document refers to version 1.00 of Lingua::Klingon::Recode,
-released on 2003-10-19.
+This document refers to version 1.01 of Lingua::Klingon::Recode,
+released on 2004-05-09.
 
 =head1 SYNOPSIS
 
@@ -269,13 +273,13 @@ released on 2003-10-19.
 
 or
 
-  use Lingua::Klingon::Collate ':all';
+  use Lingua::Klingon::Recode ':all';
   @copy = recode 'XIFAN HOL', 'tlhIngan Hol', @original;
 
 or
 
   # demonstrate scalar version for a change
-  use Lingua::Klingon::Collate qw( recode );
+  use Lingua::Klingon::Recode qw( recode );
   $copy = recode 'XIFAN HOL', 'tlhIngan Hol', $original;
 
 
@@ -311,19 +315,21 @@ The standard encoding for Klingon; this is the usual transliteration.
 
 This is the same as the standard encoding, except that all letters are
 lowercase. This has the grave disadvantage that 'q' and 'Q' are
-conflated.
+conflated, and that "ngh" can represent either "ng+H" or "n+gh" (it is
+interpreted as the former).
 
 =item TLHINGAN HOL, TLHINGAN, TLHINGAN HOL DAJATLH'a'
 
 This is the same as the standard encoding, except that all letters are
-uppercase. Again, 'q' and 'Q' cannot be distinguished in this encoding.
+uppercase. Again, 'q' and 'Q' cannot be distinguished in this encoding,
+and the sequence "NGH" is ambiguous.
 
 =item XIFAN HOL, XIFAN, XIFAN HOL DAJAX'A'
 
 This is the so-called "XIFAN HOL" encoding, used, for example, as the
 encoding of some fonts.
 
-=item XIFAN HOL DAJAXZAZ, XIFANZ
+=item XIFANZ, XIFAN HOL DAJAXZAZ
 
 This is the same encoding as the one above, but it uses Z for what is
 written ' (apostrophe) in the standard encoding, rather than the
@@ -338,7 +344,7 @@ This encoding must be specified in its full form, or in the abbreviation
 This is the "XIFAN HOL" encoding with all letters replaced by their
 lowercase form.
 
-=item xifan hol dajaxzaz, xifanz
+=item xifanz, xifan hol dajaxzaz
 
 This is the "XIFAN HOL" encoding with all letters replaced by their
 lowercase form, and with 'z' rather than "'" for the apostrophe. This
@@ -400,7 +406,11 @@ returns the first converted string.
 
 =head1 BUGS
 
-None currently known.
+The 'tlhingan hol' and 'TLHINGAN HOL' encodings lose information; this
+is inherent in their definition. Do not use these encodings unless you
+really need to.
+
+No bugs in the code itself are currently known.
 
 Please report any bugs found through http://rt.cpan.org/ or by emailing
 the author.
@@ -422,7 +432,7 @@ Philip Newton, E<lt>pne@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2003 by Philip Newton.  All rights reserved.
+Copyright (C) 2003, 2004 by Philip Newton.  All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
