@@ -26,7 +26,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $keep_accents);
 @EXPORT = qw(
 	
 );
-$VERSION = '1.0';
+$VERSION = '1.01';
 
 my %xfrm = (
     a   => 'a',
@@ -102,8 +102,8 @@ Lingua::Klingon::Collate - Sort words in Klingon sort order
 
 =head1 VERSION
 
-This document refers to version 1.0 of Lingua::Klingon::Collate, released
-on 2003-09-20.
+This document refers to version 1.01 of Lingua::Klingon::Collate,
+released on 2003-09-22.
 
 =head1 SYNOPSIS
 
@@ -137,10 +137,12 @@ or
                   @words;
 
   # using strxfrm, native sort, and strunxfrm
+  # (need to use unary + in front of strxfrm so that it is not
+  # treated as the sort sub argument to sort)
   @sorted_words = strunxfrm
                   sort
-                  strxfrm
-                  @transformed;
+                  +strxfrm
+                  @words;
 
   
 =head1 DESCRIPTION

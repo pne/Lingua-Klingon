@@ -1,5 +1,5 @@
-Lingua::Klingon::Collate version 1.0
-====================================
+Lingua::Klingon::Collate version 1.01
+=====================================
 
 Lingua::Klingon::Collate is a module which allows you to sort words in
 Klingon sort order (for example, 'ngan' should sort after 'nob' since
@@ -19,7 +19,10 @@ strcoll(3). There is no standard C library function strunxfrm(3).
 
 CHANGES SINCE THE LAST VERSION
 
-This is the first version.
+Corrected an example in the documentation: "strunxfrm sort strxfrm
+@words" will not work since that will be "strunxfrm(sort(strxfrm
+@words))" rather than "strunxfrm(sort(strxfrm(@words)))" -- that is,
+strxfrm will be taken as a sort sub.
 
 For changes in previous versions, see the file "Changes".
 
