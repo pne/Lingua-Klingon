@@ -26,7 +26,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $keep_accents);
 @EXPORT = qw(
 	
 );
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 my %xfrm = (
     a   => 'a',
@@ -59,7 +59,7 @@ my %xfrm = (
 
 my %unxfrm = reverse %xfrm;
 
-my $letter = qr/tlh|ch|gh|ng|[abDeHIjlmnopqQrStuvwy']/;
+my $letter = qr/tlh|ch|gh|ng(?!h)|[abDeHIjlmnopqQrStuvwy']/;
 my $nonletter = qr/[^a-zA-Z']/;
 
 
@@ -73,7 +73,7 @@ sub strxfrm {
   my @result;
 
   for my $string (wantarray ? @_ : $_[0]) {
-    (my $copy = $string) =~ s/\G($letter)(?=$letter*$)/$xfrm{$1}/gc;
+    (my $copy = $string) =~ s/\G($letter)(?=$letter*$)/$xfrm{$1}/g;
     push @result, $copy;
   }
 
@@ -102,8 +102,8 @@ Lingua::Klingon::Collate - Sort words in Klingon sort order
 
 =head1 VERSION
 
-This document refers to version 1.01 of Lingua::Klingon::Collate,
-released on 2003-09-22.
+This document refers to version 1.02 of Lingua::Klingon::Collate,
+released on 2004-05-09.
 
 =head1 SYNOPSIS
 
@@ -248,7 +248,7 @@ Philip Newton, E<lt>pne@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2003 by Philip Newton.  All rights reserved.
+Copyright (C) 2003, 2004 by Philip Newton.  All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:

@@ -1,4 +1,4 @@
-Lingua::Klingon::Collate version 1.01
+Lingua::Klingon::Collate version 1.02
 =====================================
 
 Lingua::Klingon::Collate is a module which allows you to sort words in
@@ -19,10 +19,8 @@ strcoll(3). There is no standard C library function strunxfrm(3).
 
 CHANGES SINCE THE LAST VERSION
 
-Corrected an example in the documentation: "strunxfrm sort strxfrm
-@words" will not work since that will be "strunxfrm(sort(strxfrm
-@words))" rather than "strunxfrm(sort(strxfrm(@words)))" -- that is,
-strxfrm will be taken as a sort sub.
+Minor code change to make parsing of the sequence "ngh" easier (which is
+n+gh and not ng+h).
 
 For changes in previous versions, see the file "Changes".
 
