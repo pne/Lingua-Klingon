@@ -2,7 +2,7 @@
 
 #########################
 
-use Test::More tests => 23;
+use Test::More tests => 29;
 use Test::Differences;
 use Carp;
 
@@ -15,6 +15,10 @@ eq_or_diff [ spell 'monghom'  ],
 eq_or_diff [ spell 'mongHom'  ],
            [ qw(m o ng H o m) ],
            'mongHom';
+
+eq_or_diff [ spell 'mongghom'  ],
+           [ qw(m o ng gh o m) ],
+           'mongghom';
 
 eq_or_diff [ spell 'vavoy' ],
            [ qw(v a v o y) ],
@@ -68,6 +72,14 @@ eq_or_diff [ spell "paw'bej"   ],
            [ qw(p a w ' b e j) ],
            "paw'bej";
 
+eq_or_diff [ spell "paw'a'"  ],
+           [ qw(p a w ' a ') ],
+           "paw'a'";
+
+eq_or_diff [ spell "paw''a'"   ],
+           [ qw(p a w ' ' a ') ],
+           "paw''a'";
+
 eq_or_diff [ spell "Suy" ],
            [ qw(S u y)   ],
            "Suy";
@@ -95,3 +107,17 @@ eq_or_diff [ spell "gharghmey"   ],
 eq_or_diff [ spell "ghargho" ],
            [ qw(gh a r gh o) ],
            "ghargho";
+
+eq_or_diff [ spell "tlhIngan Hol Dajatlh'a'?"         ],
+           [ qw(tlh I ng a n H o l D a j a tlh ' a ') ],
+           "tlhIngan Hol Dajatlh'a'?";
+
+# Test a long word
+eq_or_diff [ spell "QaghHommeyHeylIjmo'"              ],
+           [ qw(Q a gh H o m m e y H e y l I j m o ') ],
+           "QaghHommeyHeylIjmo'";
+
+# Test a long non-word
+eq_or_diff [ spell "QaghHommeyHeylIjmoqqq"                ],
+           [ qw(Q a gh H o m m e y H e y l I j m o q q q) ],
+           "QaghHommeyHeylIjmoqqq";

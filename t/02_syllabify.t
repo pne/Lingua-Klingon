@@ -2,7 +2,7 @@
 
 #########################
 
-use Test::More tests => 23;
+use Test::More tests => 29;
 use Test::Differences;
 use Carp;
 
@@ -15,6 +15,10 @@ eq_or_diff [ syllabify 'monghom' ],
 eq_or_diff [ syllabify 'mongHom' ],
            [ qw(mong Hom)        ],
            'mongHom';
+
+eq_or_diff [ syllabify 'mongghom' ],
+           [ qw(mong ghom)        ],
+           'mongghom';
 
 eq_or_diff [ syllabify 'vavoy' ],
            [ qw(va voy)        ],
@@ -68,6 +72,14 @@ eq_or_diff [ syllabify "paw'bej" ],
            [ qw(paw' bej)        ],
            "paw'bej";
 
+eq_or_diff [ syllabify "paw'a'" ],
+           [ qw(paw 'a')        ],
+           "paw'a'";
+
+eq_or_diff [ syllabify "paw''a'" ],
+           [ qw(paw' 'a')        ],
+           "paw''a'";
+
 eq_or_diff [ syllabify "Suy" ],
            [ qw(Suy)         ],
            "Suy";
@@ -95,3 +107,17 @@ eq_or_diff [ syllabify "gharghmey" ],
 eq_or_diff [ syllabify "ghargho" ],
            [ qw(ghar gho)        ],
            "ghargho";
+
+eq_or_diff [ syllabify "tlhIngan Hol Dajatlh'a'?" ],
+           [ qw(tlhI ngan Hol Da jatlh 'a')       ],
+           "tlhIngan Hol Dajatlh'a'?";
+
+# Test a long word
+eq_or_diff [ syllabify "QaghHommeyHeylIjmo'" ],
+           [ qw(Qagh Hom mey Hey lIj mo')    ],
+           "QaghHommeyHeylIjmo'";
+
+# Test a long non-word
+eq_or_diff [ syllabify "QaghHommeyHeylIjmoqqq" ],
+           [                                   ],
+           "QaghHommeyHeylIjmoqqq";

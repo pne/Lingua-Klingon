@@ -25,22 +25,30 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $keep_accents);
 @EXPORT = qw(
 	
 );
-$VERSION = '1.0';
+$VERSION = '1.01';
 
-my $letter = qr/tlh|ch|gh|ng|[abDeHIjlmnopqQrStuvwy']/;
-my $consonant = qr/tlh|ch|gh|ng|[bDHjlmnpqQrStvwy']/;
+my $letter = qr/tlh|ch|gh|ng(?!h)|[abDeHIjlmnopqQrStuvwy']/;
+my $consonant = qr/tlh|ch|gh|ng(?!h)|[bDHjlmnpqQrStvwy']/;
 my $vowel = qr/[aeIou]/;
 my $head = $consonant;
 my $tail = qr/rgh|w'|y'|$consonant/o;
 
 
 sub syllabify {
-  $_[0] =~ /\G($head$vowel$tail?)(?=(?:$head$vowel$tail?)*$)/gc;
+  my @syllables;
+  foreach my $word ($_[0] =~ /($letter+)/go) {
+    push @syllables, $word =~ /\G($head$vowel$tail?)(?=(?:$head$vowel$tail?)*$)/goc;
+  }
+  @syllables;
 }
 
 
 sub spell {
-  $_[0] =~ /\G($letter)(?=$letter*$)/gc;
+  my @letters;
+  foreach my $word ($_[0] =~ /($letter+)/go) {
+    push @letters, $word =~ /\G($letter)/goc;
+  }
+  @letters;
 }
 
 
@@ -53,8 +61,8 @@ Lingua::Klingon::Segment - Segment Klingon words into syllables and letters
 
 =head1 VERSION
 
-This document refers to version 1.0 of Lingua::Klingon::Segment, released
-on 2003-09-20.
+This document refers to version 1.01 of Lingua::Klingon::Segment, released
+on 2004-05-09.
 
 =head1 SYNOPSIS
 
@@ -108,6 +116,12 @@ This subroutine splits a given word into letters. It returns the list of
 letters that make up that word (counting all Klingon letters as one,
 including 'ch', 'gh', 'ng', and 'tlh').
 
+=head1 LIMITATIONS
+
+Lingua::Klingon::Segment has only been tested on single words. If you
+pass it multi-word phrases, it will only extract Klingon letters or
+syllables.
+
 =head1 BUGS
 
 None currently known. If you find any, please email me.
@@ -129,7 +143,7 @@ Philip Newton, E<lt>pne@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2003 by Philip Newton.  All rights reserved.
+Copyright (C) 2003, 2004 by Philip Newton.  All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
