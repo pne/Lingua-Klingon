@@ -25,7 +25,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $keep_accents);
 @EXPORT = qw(
 	
 );
-$VERSION = '1.01';
+$VERSION = '1.03';
 
 my $letter = qr/tlh|ch|gh|ng(?!h)|[abDeHIjlmnopqQrStuvwy']/;
 my $consonant = qr/tlh|ch|gh|ng(?!h)|[bDHjlmnpqQrStvwy']/;
@@ -45,9 +45,7 @@ sub syllabify {
 
 sub spell {
   my @letters;
-  foreach my $word ($_[0] =~ /($letter+)/go) {
-    push @letters, $word =~ /\G($letter)/goc;
-  }
+  @letters = $_[0] =~ /($letter)/go;
   @letters;
 }
 
@@ -61,8 +59,8 @@ Lingua::Klingon::Segment - Segment Klingon words into syllables and letters
 
 =head1 VERSION
 
-This document refers to version 1.01 of Lingua::Klingon::Segment, released
-on 2004-05-09.
+This document refers to version 1.03 of Lingua::Klingon::Segment, released
+on 2004-05-17.
 
 =head1 SYNOPSIS
 
@@ -107,20 +105,29 @@ by using the tag ':all'.
 
 =head2 syllabify
 
-This subroutine splits a given word into syllables. It returns the list
-of syllables that make up that word.
+This subroutine splits a given word or phrase into syllables. It returns
+the list of syllables that make up that word or phrase.
+
+If the input is a multi-word phrase, the output is the list of all
+syllables in that phrase, regardless of which word they came from (for
+example, the output of "syllabify 'jISop vIneH'" is qw(jI Sop vI neH).
+
+In scalar context, returns the number of syllables in the input.
 
 =head2 spell
 
-This subroutine splits a given word into letters. It returns the list of
-letters that make up that word (counting all Klingon letters as one,
-including 'ch', 'gh', 'ng', and 'tlh').
+This subroutine splits a given word or phrase into letters. It returns
+the list of letters that make up that word or phrase (counting all
+Klingon letters as one, including 'ch', 'gh', 'ng', and 'tlh').
 
-=head1 LIMITATIONS
+If the input is a multi-word phrase, the output is the list of all
+Klingon letters in that phrase. Non-letters such as spaces or
+punctuation are not included.
 
-Lingua::Klingon::Segment has only been tested on single words. If you
-pass it multi-word phrases, it will only extract Klingon letters or
-syllables.
+If the input includes words which are not Klingon words, the output is
+undefined.
+
+In scalar context, returns the number of Klingon letters in the input.
 
 =head1 BUGS
 

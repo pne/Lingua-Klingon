@@ -2,7 +2,7 @@
 
 #########################
 
-use Test::More tests => 29;
+use Test::More tests => 31;
 use Test::Differences;
 use Carp;
 
@@ -121,3 +121,17 @@ eq_or_diff [ spell "QaghHommeyHeylIjmo'"              ],
 eq_or_diff [ spell "QaghHommeyHeylIjmoqqq"                ],
            [ qw(Q a gh H o m m e y H e y l I j m o q q q) ],
            "QaghHommeyHeylIjmoqqq";
+
+# Test several long words
+# From http://www.kli.org/wiki/index.php?Klingon%20Wordplay%20Contests
+eq_or_diff [ spell "nobwI''a'pu'qoqvam'e' nuHegh'eghrupqa'moHlaHbe'law'lI'neS SeH'eghtaHghach'a'na'chajmo'" ],
+           [ qw(n o b w I ' ' a ' p u ' q o q v a m ' e '
+                n u H e gh ' e gh r u p q a ' m o H l a H b e ' l a w ' l I ' n e S
+                S e H ' e gh t a H gh a ch ' a ' n a ' ch a j m o ') ],
+           "The so-called great benefactors are seemingly unable to cause us to prepare to resume honorable suicide (in progress) due to their definite self control.";
+
+eq_or_diff [ spell "be'HomDu'na'wIjtIq'a'Du'na'vaD ghur'eghqangqa'moHlaHqu'be'taH'a' Somraw'a'meyna'wIj'e'" ],
+           [ qw(b e ' H o m D u ' n a ' w I j t I q ' a ' D u ' n a ' v a D
+                gh u r ' e gh q a ng q a ' m o H l a H q u ' b e ' t a H ' a '
+                S o m r a w ' a ' m e y n a ' w I j ' e ') ],
+           "Is it not that my many, large, scattered muscles are quite capable of swelling for the benefit of the hearts of many scattered little women?";

@@ -2,7 +2,7 @@
 
 #########################
 
-use Test::More tests => 29;
+use Test::More tests => 31;
 use Test::Differences;
 use Carp;
 
@@ -121,3 +121,17 @@ eq_or_diff [ syllabify "QaghHommeyHeylIjmo'" ],
 eq_or_diff [ syllabify "QaghHommeyHeylIjmoqqq" ],
            [                                   ],
            "QaghHommeyHeylIjmoqqq";
+
+# Test several long words
+# From http://www.kli.org/wiki/index.php?Klingon%20Wordplay%20Contests
+eq_or_diff [ syllabify "nobwI''a'pu'qoqvam'e' nuHegh'eghrupqa'moHlaHbe'law'lI'neS SeH'eghtaHghach'a'na'chajmo'" ],
+           [ qw(nob wI' 'a' pu' qoq vam 'e'
+                nu Hegh 'egh rup qa' moH laH be' law' lI' neS
+                SeH 'egh taH ghach 'a' na' chaj mo') ],
+           "The so-called great benefactors are seemingly unable to cause us to prepare to resume honorable suicide (in progress) due to their definite self control.";
+
+eq_or_diff [ syllabify "be'HomDu'na'wIjtIq'a'Du'na'vaD ghur'eghqangqa'moHlaHqu'be'taH'a' Somraw'a'meyna'wIj'e'" ],
+           [ qw(be' Hom Du' na' wIj tIq 'a' Du' na' vaD
+                ghur 'egh qang qa' moH laH qu' be' taH 'a'
+                Som raw 'a' mey na' wIj 'e') ],
+           "Is it not that my many, large, scattered muscles are quite capable of swelling for the benefit of the hearts of many scattered little women?";

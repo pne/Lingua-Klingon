@@ -1,4 +1,4 @@
-Lingua::Klingon::Segment version 1.01
+Lingua::Klingon::Segment version 1.03
 =====================================
 
 Lingua::Klingon::Segment is a module which allows you to decompose
@@ -6,7 +6,9 @@ Klingon words into syllables and letters.
 
 CHANGES SINCE THE LAST VERSION
 
-Enable segmenting for multiple words at once; handle "ngh" cases better.
+Added a couple of tests with big long words.
+
+Removed \G and /c from the regex in 'sub spell'.
 
 For changes in previous versions, see the file "Changes".
 
