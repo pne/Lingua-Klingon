@@ -2,7 +2,7 @@
 
 #########################
 
-use Test::More tests => 29;
+use Test::More tests => 31;
 use Carp;
 
 BEGIN {use_ok 'Lingua::Klingon::Collate', 'strxfrm'; }
@@ -38,3 +38,12 @@ is(strxfrm("'"),   'z', "'"  );
 # And a couple of words
 is(strxfrm('monghom'), 'knlfnk', 'monghom');
 is(strxfrm('mongHom'), 'knmgnk', 'mongHom');
+
+# And some phrases of more than one word
+# Non-letters should remain unchanged
+is(strxfrm("tlhIngan Hol DajatlhlaH'a', tera'ngan?"),
+   'uhmal gnj daiaujagzaz, terazmal?',
+   "tlhIngan Hol DajatlhlaH'a', tera'ngan?");
+is(strxfrm("wa'/cha',wej.loS vagh:jav!Soch?chorgh"),
+   'xaz/caz,xei.jns waf:iaw!snc?cnrf',
+   "wa'/cha',wej.loS vagh:jav!Soch?chorgh");

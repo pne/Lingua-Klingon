@@ -5,7 +5,7 @@ use 5.005;
 use strict;
 
 require Exporter;
-use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $keep_accents);
+use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 @ISA = qw(Exporter);
 
 # Items to export into callers namespace by default. Note: do not export
@@ -26,7 +26,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $keep_accents);
 @EXPORT = qw(
 	
 );
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 my %xfrm = (
     a   => 'a',
@@ -73,7 +73,8 @@ sub strxfrm {
   my @result;
 
   for my $string (wantarray ? @_ : $_[0]) {
-    (my $copy = $string) =~ s/\G($letter)(?=$letter*$)/$xfrm{$1}/g;
+    # only transform letters; leave all the rest as it is
+    (my $copy = $string) =~ s/($letter)/$xfrm{$1}/g;
     push @result, $copy;
   }
 
@@ -102,8 +103,8 @@ Lingua::Klingon::Collate - Sort words in Klingon sort order
 
 =head1 VERSION
 
-This document refers to version 1.02 of Lingua::Klingon::Collate,
-released on 2004-05-09.
+This document refers to version 1.03 of Lingua::Klingon::Collate,
+released on 2004-05-17.
 
 =head1 SYNOPSIS
 
@@ -175,7 +176,7 @@ by using the tag ':all'.
 
 =head2 strcoll
 
-This subroutine takes two words and compares them according to Klingon
+This subroutine takes two strings and compares them according to Klingon
 sort order. It returns 0 if the two words are equal, a negative number
 if the first word sorts before the second one, and a positive number of
 the first word sorts after the second one. (This is the same behaviour
@@ -187,6 +188,13 @@ This subroutine can also be used as a sort subroutine:
 
   @sorted_words = sort strcoll @words;
 
+Note that while arguments may contain spaces, punctuation, and other
+non-letters, the sort order of these characters relative to letters is
+undefined. (For example, it is undefined whether "cha vIlegh" sorts
+before or after "cha' vIlegh", since the order of apostrophe and space
+is undefined.) However, "cha' vIlegh" sorts after "cha' Dalegh", since
+'v' > 'D' and all characters up to that point were equal.
+
 =head2 strxfrm
 
 This subroutine takes one or more strings as input and transforms them
@@ -194,12 +202,18 @@ into a representation such that using the default sort on two outputs of
 this subroutine is equivalent to sorting the corresponding inputs with
 C<strcoll>.
 
-This should hold true even for variant character sets such as EBCDIC, as
-long as the code points for lower-case letters increase monotonically
-from ord('a') to ord('z').
+The transformed string currently represents all Klingon characters by
+one lower-case letter each; however, this is an implementation detail
+and is not guaranteed. (For example, upper-case letters rather than
+lower-case ones could conceivably be used in the future.)
 
-This subroutine can, therefore, be used to pre-process strings in order
-to sort them more efficiently.
+However, in order to ensure correct sorting under non-ASCII character
+sets such as EBCDIC, the only restriction that this module currently
+places on the character set is that the code points for letters increase
+monotonically from ord('a') to ord('z') and from ord('A') to ord('Z').
+
+This subroutine can be used to pre-process strings in order to sort them
+more efficiently.
 
 In list context, it returns a list of transformed strings in the same
 order as the input strings. In scalar context, it returns the
@@ -224,12 +238,6 @@ it returns the untransformed version of the first input string.
 
 The result of applying C<strunxfrm> to a string that is not a valid,
 defined output of C<strxfrm> is undefined.
-
-=head1 BUGS
-
-strxform and, therefore, strcoll currently only work on single words
-(that is, strings consisting only of valid Klingon letters without
-punctuation, whitespace, or other characters). Patches welcome.
 
 =head1 SEE ALSO
 
