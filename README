@@ -1,4 +1,4 @@
-Lingua::Klingon::Recode version 1.01
+Lingua::Klingon::Recode version 1.02
 ====================================
 
 Lingua::Klingon::Recode is a module which allows you to convert Klingon
@@ -32,11 +32,7 @@ It currently supports the following encodings:
 
 CHANGES SINCE THE LAST VERSION
 
-Parse "ngh" correctly in "tlhIngan Hol"; "monghom" is now correctly
-m+o+n+gh+o+m rather than m+o+ng+(unrecognised letter h, passed
-through)+o+m.
-
-Update tests to test various "ng"/"ngH"/"ngh"/"nggh" situations.
+Update tests to test "Q" vs. "q".
 
 For changes in previous versions, see the file "Changes".
 

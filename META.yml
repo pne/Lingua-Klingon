@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name: Lingua-Klingon-Recode
-version: 1.01
+version: 1.02
 author:
   - Philip Newton, E<lt>pne@cpan.orgE<gt>
 abstract: Convert Klingon words between different encodings
@@ -15,5 +15,5 @@ build_requires:
 provides:
   Lingua::Klingon::Recode:
     file: lib/Lingua/Klingon/Recode.pm
-    version: 1.01
+    version: 1.02
 generated_by: Module::Build version 0.25

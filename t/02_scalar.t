@@ -12,7 +12,7 @@ BEGIN {
 
 use Test::More tests => (1
                          + @encodings*@encodings
-                         + @encodings*@encodings*4
+                         + @encodings*@encodings*5
                          + @encodings*@encodings);
 use Carp;
 use strict;
@@ -87,6 +87,17 @@ my @words = (
         'xifan'    => 'mafgom',
         'xifanz'   => 'mafgom',
     },
+    {
+        'uhmal'    => 'qep',
+        'UHMAL'    => 'QEP',
+        'tlhIngan' => 'Qeq',
+        'tlhingan' => 'qeq',
+        'TLHINGAN' => 'QEQ',
+        'XIFAN'    => 'QEK',
+        'XIFANZ'   => 'QEK',
+        'xifan'    => 'qek',
+        'xifanz'   => 'qek',
+    },
 );
 
 my $word;
@@ -94,11 +105,13 @@ for $word (@words) {
     # diag "\nTesting word $word->{'tlhIngan'}\n";
     for $from (@encodings) {
         SKIP: {
-            # Skip 'manghom' test for the lossy tlhingan and TLHINGAN
-            # encodings; due to case-smashing, these tests can never work.
+            # Skip 'manghom' and 'Qeq' tests for the lossy tlhingan and
+            # TLHINGAN encodings; due to case-smashing, these tests can never
+            # work.
             skip "case-smashing loses information", scalar(@encodings)
                 if (($from eq 'tlhingan' or $from eq 'TLHINGAN')
-                    && $word->{'tlhIngan'} eq 'manghom');
+                    &&
+                    ($word->{'tlhIngan'} eq 'manghom' or $word->{'tlhIngan'} eq 'Qeq'));
 
             for $to (@encodings) {
                 # diag "Testing $from -> $to";

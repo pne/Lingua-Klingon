@@ -1,6 +1,10 @@
-# vim:set noet ts=8 ai:
+# vim:set noet ts=8 ai list lcs=tab\:^» tw=72:
 
 Revision history for Perl extension Lingua::Klingon::Recode.
+
+1.02	Sun 2004-05-09
+	- Test for "Q" vs. "q" (which doesn't work in the case of lossy
+	  tlhingan hol / TLHINGAN HOL, of course)
 
 1.01	Sun 2004-05-09
 	- Parse "ngh" correctly in "tlhIngan Hol"; "monghom" is now

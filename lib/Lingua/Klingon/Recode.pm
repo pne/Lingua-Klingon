@@ -25,7 +25,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 @EXPORT = qw(
 	
 );
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 # convert from encoding FOO to uhmal gnj
 my %from = (
@@ -261,7 +261,7 @@ Lingua::Klingon::Recode - Convert Klingon words between different encodings
 
 =head1 VERSION
 
-This document refers to version 1.01 of Lingua::Klingon::Recode,
+This document refers to version 1.02 of Lingua::Klingon::Recode,
 released on 2004-05-09.
 
 =head1 SYNOPSIS
